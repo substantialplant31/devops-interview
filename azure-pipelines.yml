@@ -28,10 +28,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: '$(azureSubscription)'
     appType: 'webApp'
     WebAppName: 'AccWeatherBrady'
-    packageForLinux: '$(build.artifactStatingDirectory\AccWeatherBrady.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory\AccWeatherBrady.zip'
