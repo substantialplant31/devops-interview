@@ -43,5 +43,5 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: '$(azureSubscription)'
     appType: 'webApp'
-    WebAppName: 'WebApp'
+    WebAppName: 'AccWeatherBrady'
     packageForLinux: '$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip'
