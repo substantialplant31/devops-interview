@@ -36,4 +36,4 @@ steps:
     azureSubscription: '$(azureSubscription)'
     appType: 'webApp'
     WebAppName: 'AccWeatherBrady'
-    packageForLinux: '$(Build.ArtifactStagingDirectory\AccWeatherBrady.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/AccWeatherBrady.zip'
