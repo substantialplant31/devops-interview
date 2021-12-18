@@ -28,6 +28,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: PublishBuildArtifacts@1
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -36,4 +38,4 @@ steps:
     WebAppName: 'AccWeatherBrady'
     packageForLinux: '$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip'
 
-- task: PublishBuildArtifacts@1
+
