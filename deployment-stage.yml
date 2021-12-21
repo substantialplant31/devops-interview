@@ -33,14 +33,14 @@ stages:
       displayName: 'Deploy to Production'
       pool:
         name: 'Azure Pipelines'
-        vmImage: ${{ parameters.vmImage }}
+        vmImage: 'windows-latest'
       environment: Production
       strategy:
         runOnce:
           deploy:
             steps:
             - download: current
-              artifact: drop
+              artifact: 'AccWeatherBrady'
             - task: AzureRmWebAppDeployment@4
               inputs:
                 ConnectionType: 'AzureRM'
