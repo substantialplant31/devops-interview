@@ -25,8 +25,7 @@ stages:
                 azureSubscription: '$(azureSubscription)'
                 appType: 'webApp'
                 WebAppName: 'AccWeatherBradyDev'
-                packageForLinux: '$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip'
-                RuntimeStack: '$(RuntimeStack)'
+                packageForLinux: '$(Build.ArtifactStagingDirectory)\*.zip'
 
 -  stage: 'Production'
    jobs:
