@@ -1,6 +1,7 @@
 trigger: 
 -  master
 -  release/*
+-  features/*
 
 variables:
 -  template: template-variables.yaml
@@ -14,7 +15,7 @@ stages:
      buildConfiguration: $(buildConfiguration)
      runtime: $(runtime)
 # Deployment Stage
--  template: deployment-stage.yml
+-  template: deployment-stage.y0ml
    parameters: 
      projectName: $(projectName)
      vmImage: $(vmImage) 
