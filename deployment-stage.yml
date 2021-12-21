@@ -43,9 +43,8 @@ stages:
               artifact: drop
             - task: AzureRmWebAppDeployment@4
               inputs:
-                ConnectionType: '$(ConnectionType)'
+                ConnectionType: 'AzureRM'
                 azureSubscription: '$(azureSubscription)'
-                appType: '$(appType)'
-                WebAppName: '$(WebAppName)'
+                appType: 'webApp'
+                WebAppName: 'AccWeatherBrady'
                 packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-                RuntimeStack: '$(RuntimeStack)'
