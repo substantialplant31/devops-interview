@@ -3,8 +3,6 @@ trigger:
 -  release/*
 -  features/*
 
-variables:
--  template: template-variables.yaml
 
 stages:
 # Build Stage
