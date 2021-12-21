@@ -7,11 +7,7 @@ trigger:
 stages:
 # Build Stage
 -  template: build-stage.yml
-   parameters: 
-     projectName: $(projectName)
-     vmImage: $(vmImage)
-     buildConfiguration: $(buildConfiguration)
-     runtime: $(runtime)
+   
 # Deployment Stage
 -  template: deployment-stage.yml
    parameters: 
