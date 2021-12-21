@@ -1,17 +1,20 @@
-parameters:
-  projectName: ''
-  vmImage: ''
-  buildConfiguration: ''
-  runtime: ''
-
 stages:
 -  stage: 'Build'
    displayName: 'Build'
    pool:
      name: 'Azure Pipelines'
+     vmImage: 'windows-latest'
+   variables:
+     solution: '**/*.sln'
+     buildPlatform: 'Any CPU'
+     buildConfiguration: 'Release'
    jobs:
    - job: 'Build'
      steps:
+        - task: NuGetToolInstaller@1
+        - task: NuGetCommand@2
+          inputs:
+            restoreSolution: '$(solution)'
         - task: VSBuild@1
           displayName: 'Dotnet Build'
           inputs:
