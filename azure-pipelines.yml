@@ -15,7 +15,7 @@ stages:
      buildConfiguration: $(buildConfiguration)
      runtime: $(runtime)
 # Deployment Stage
--  template: deployment-stage.y0ml
+-  template: deployment-stage.yml
    parameters: 
      projectName: $(projectName)
      vmImage: $(vmImage) 
