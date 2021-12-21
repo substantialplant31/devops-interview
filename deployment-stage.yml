@@ -18,7 +18,7 @@ stages:
           deploy:
             steps:
              - download: current
-               artifact: drop
+               artifact: 'AccWeatherBrady'
              - task: AzureRmWebAppDeployment@4
                inputs:
                 ConnectionType: 'AzureRM'
