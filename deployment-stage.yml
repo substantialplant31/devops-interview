@@ -11,13 +11,22 @@ stages:
       displayName: 'Deploy to Dev'
       pool:
         name: 'Azure Pipelines'
-        vmImage: ${{ parameters.vmImage }}
+        vmImage: 'windows-latest'
       environment: Development
       strategy:
         runOnce:
           deploy:
             steps:
-            -  script: echo Deployed to Dev
+             - download: current
+               artifact: drop
+             - task: AzureRmWebAppDeployment@4
+               inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: '$(azureSubscription)'
+                appType: 'webApp'
+                WebAppName: 'AccWeatherBradyDev'
+                packageForLinux: '$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip'
+                RuntimeStack: '$(RuntimeStack)'
 
 -  stage: 'Production'
    jobs:
