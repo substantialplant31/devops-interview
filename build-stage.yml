@@ -9,7 +9,6 @@ stages:
    displayName: 'Build'
    pool:
      name: 'Azure Pipelines'
-     vmImage: ${{ parameters.vmImage }}
    jobs:
    - job: 'Build'
      steps:
