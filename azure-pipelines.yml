@@ -1,47 +1,22 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
-trigger:
-- main
-
-pool:
-  vmImage: 'windows-latest'
+trigger: 
+-  master
+-  release/*
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+-  template: template-variables.yaml
 
-steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'AccWeatherBrady'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: '$(azureSubscription)'
-    appType: 'webApp'
-    WebAppName: 'AccWeatherBrady'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip'
+stages:
+# Build Stage
+-  template: build-stage.yml
+   parameters: 
+     projectName: $(projectName)
+     vmImage: $(vmImage)
+     buildConfiguration: $(buildConfiguration)
+     runtime: $(runtime)
+# Deployment Stage
+-  template: deployment-stage.yml
+   parameters: 
+     projectName: $(projectName)
+     vmImage: $(vmImage) 
+     RuntimeStack: $(RuntimeStack)
+     WebAppName: $(WebAppName)
