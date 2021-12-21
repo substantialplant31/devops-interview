@@ -13,21 +13,19 @@ stages:
    jobs:
    - job: 'Build'
      steps:
-        - task: DotNetCoreCLI@1
+        - task: VSBuild@1
           displayName: 'Dotnet Build'
           inputs:
-            command: build
-            projects: |
-              ${{ parameters.projectName }}/${{ parameters.projectName }}.csproj  
-        - task: DotNetCoreCLI@2
-          displayName: 'Dotnet Publish'
+            solution: '$(solution)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip" /p:DeployIisAppPath="Default Web Site"'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        - task: VSTest@2
+          displayName: 'DotNet Test'
           inputs:
-            command: publish
-            projects: |
-              ${{ parameters.projectName }}/${{ parameters.projectName }}.csproj
-            publishWebProjects: true
-            arguments: '-c $(buildConfiguration) --runtime $(runtime) --self-contained -o $(Build.ArtifactStagingDirectory)'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
+            ArtifactName: 'AccWeatherBrady'
