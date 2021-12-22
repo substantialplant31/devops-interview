@@ -1,0 +1,50 @@
+parameters:
+  project: ''
+  vmImage: ''
+  buildConfiguration: ''
+  runtime: ''
+
+stages:
+-  stage: 'Development'
+   jobs:
+   -  deployment: DeployWebApp
+      displayName: 'Deploy to Dev'
+      pool:
+        name: 'Azure Pipelines'
+        vmImage: 'windows-latest'
+      environment: Development
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+             - download: current
+               artifact: 'AccWeatherBrady'
+             - task: AzureRmWebAppDeployment@4
+               inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: '$(azureSubscription)'
+                appType: 'webApp'
+                WebAppName: 'AccWeatherBradyDev'
+                packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+
+-  stage: 'Production'
+   jobs:
+   -  deployment: DeployWebApp
+      displayName: 'Deploy to Production'
+      pool:
+        name: 'Azure Pipelines'
+        vmImage: 'windows-latest'
+      environment: Production
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: 'AccWeatherBrady'
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: '$(azureSubscription)'
+                appType: 'webApp'
+                WebAppName: 'AccWeatherBrady'
+                packageForLinux: '$(Pipeline.Workspace)/**/*.zip'

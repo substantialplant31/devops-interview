@@ -1,0 +1,33 @@
+stages:
+-  stage: 'Build'
+   displayName: 'Build'
+   pool:
+     name: 'Azure Pipelines'
+     vmImage: 'windows-latest'
+   variables:
+     solution: '**/*.sln'
+     buildPlatform: 'Any CPU'
+     buildConfiguration: 'Release'
+   jobs:
+   - job: 'Build'
+     steps:
+        - task: NuGetToolInstaller@1
+        - task: NuGetCommand@2
+          inputs:
+            restoreSolution: '$(solution)'
+        - task: VSBuild@1
+          displayName: 'Dotnet Build'
+          inputs:
+            solution: '$(solution)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(Build.ArtifactStagingDirectory)\AccWeatherBrady.zip" /p:DeployIisAppPath="Default Web Site"'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        - task: VSTest@2
+          displayName: 'DotNet Test'
+          inputs:
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'AccWeatherBrady'
