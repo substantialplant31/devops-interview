@@ -8,7 +8,8 @@ env:
 on:
   push:
     branches:
-      - main                                  #Triggers on Main Branch
+      - main                                  # Triggers on Main Branch
+      - features/*                            # And on feature branches
   workflow_dispatch:
 
 jobs:
