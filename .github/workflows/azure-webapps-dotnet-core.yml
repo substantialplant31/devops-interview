@@ -44,7 +44,7 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/AccWeatherBrady
 
-  deploy:
+  dev-deploy:
     runs-on: windows-latest
     needs: build
     environment:
@@ -67,7 +67,7 @@ jobs:
 
   prod-deploy:
     runs-on: windows-latest
-    needs: build
+    needs: dev-deploy
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
