@@ -1,0 +1,41 @@
+name : Infra Setup
+
+on:
+  workflow_dispatch:  # manual trigger
+  push:
+    branches:
+    - main
+    - actions
+    paths:
+    - ".github/workflows/infra_setup.yaml"
+    
+env:
+  web_app_name-dev: AccWeatherBradyDev
+  web_app_name: AccWeatherBrady
+  working_dir: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/AccWeatherBrady
+  
+jobs:
+  dev_infra_plan:
+    runs-on: windows-latest
+    env:
+      env_name: DEV
+    defaults:
+      run:
+        working-directory: ${{ env.working_dir }}
+    environment:
+      name: DEV
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
+
+    - name: Setup Authentication for TF
+      uses: Azure/cli@v1
+      with:
+        inlineScript: | 
+          echo "ARM_SUBSCRIPTION_ID=$(az account show --query="id" -o tsv)" >> $GITHUB_ENV
+          echo "ARM_CLIENT_ID=$(az account show --query="user.name" -o tsv)" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=$(jq '.clientSecret' -r <<< '${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}')" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=$(az account show --query="tenantId" -o tsv)" >> $GITHUB_ENV
