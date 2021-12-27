@@ -9,16 +9,14 @@ on:
     paths:
     - ".github/workflows/infra_setup.yaml"
     
-env:
-  web_app_name-dev: AccWeatherBradyDev
-  web_app_name: AccWeatherBrady
-  working_dir: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/AccWeatherBrady
-  
 jobs:
   dev_infra_plan:
     runs-on: windows-latest
     env:
       env_name: DEV
+      web_app_name-dev: AccWeatherBradyDev
+      working_dir: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/AccWeatherBrady
+
     defaults:
       run:
         working-directory: ${{ env.working_dir }}
