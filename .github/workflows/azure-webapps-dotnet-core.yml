@@ -1,14 +1,16 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: AccWeatherBradyDev       # App Name
+  AZURE_WEBAPP_NAME: AccWeatherBradyDev       # Dev App Name
+  AZURE_WEBAPP_NAME_PRD: AccWeatherBrady      # Dev App Name
   AZURE_WEBAPP_PACKAGE_PATH: '.'              # Repository root
   DOTNET_VERSION: '5.0.x'                     # .NET Core version to use
 
 on:
   push:
     branches:
-      - main                                  #Triggers on Main Branch
+      - main                                  # Triggers on Main Branch
+      - features/*                            # And on feature branches
   workflow_dispatch:
 
 jobs:
@@ -42,3 +44,51 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/AccWeatherBrady
+
+  dev-deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEV }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      
+      - name: Echo Dev url from deployment
+        run: echo "Got [${{ steps.deploywebapp.outputs.webapp-url }}] as DEV URL from previous step"
+
+  prod-deploy:
+    runs-on: windows-latest
+    needs: dev-deploy
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME_PRD }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PRD }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: Echo Dev url from deployment
+        run: echo "Got [${{ steps.deploywebapp.outputs.webapp-url }}] as PRD URL from previous step"
