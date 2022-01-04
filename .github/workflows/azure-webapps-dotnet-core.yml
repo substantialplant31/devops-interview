@@ -36,6 +36,9 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Test Project with dotnet
+        run: dotnet test --verbosity normal
+
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/AccWeatherBrady
 
@@ -90,5 +93,5 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_PRD }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Echo Dev url from deployment
+      - name: Echo PRD url from deployment
         run: echo "Got [${{ steps.deploywebapp.outputs.webapp-url }}] as PRD URL from previous step"

@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BradyWeather.Common", "Src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BradyWeather.Razor.Library", "Src\Common\BradyWeather.Razor.Library\BradyWeather.Razor.Library.csproj", "{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BradyWeather.TestService", "BradyWeather.TestService\BradyWeather.TestService.csproj", "{01D36F0C-DD6B-45F9-99DA-1988219F3C81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,7 +87,7 @@ Global
 		{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}.Release|x64.ActiveCfg = Release|Any CPU
 		{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}.Release|x64.Build.0 = Release|Any CPU
 		{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}.Release|x86.ActiveCfg = Release|Any CPU
-		{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}.Release|x86.Build.0 = Release|Any CPU
+		{E8C1F74D-6FB1-45CC-91B4-07157C4AF3F1}.Release|x86.Build.0 = Release|Any CPU		
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
