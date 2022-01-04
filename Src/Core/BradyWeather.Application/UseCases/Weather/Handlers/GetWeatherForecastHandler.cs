@@ -30,7 +30,7 @@ namespace BradyWeather.Application.UseCases.Weather.Handlers
             try
             {
                 var response = await _weatherClient.GetWeatherForecast(_weatherSettings.ApiKey, request.LocationKey, cancellationToken);
-                var weather = response == null ? new WeatherResponse(response.FirstOrDefault()) : new WeatherResponse();
+                var weather = response != null ? new WeatherResponse(response.FirstOrDefault()) : new WeatherResponse();
                 return weather;
             }
             catch (ApiException ex)
