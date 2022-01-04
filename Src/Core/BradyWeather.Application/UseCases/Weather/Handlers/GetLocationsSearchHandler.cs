@@ -9,25 +9,29 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Refit;
 
-namespace BradyWeather.Application.UseCases.Weather.Handlers {
-    public class GetLocationsSearchHandler : IRequestHandler<GetLocationsByTextRequest, Location[]> {
-        
+namespace BradyWeather.Application.UseCases.Weather.Handlers
+{
+    public class GetLocationsSearchHandler : IRequestHandler<GetLocationsByTextRequest, Location[]>
+    {
+
         private readonly IWeatherClient _weatherClient;
         private readonly WeatherSettings _weatherSettings;
         private readonly ILogger<GetLocationsSearchHandler> _logger;
 
-        public GetLocationsSearchHandler (ILogger<GetLocationsSearchHandler> logger, IWeatherClient weatherClient,  IOptionsMonitor<WeatherSettings> weatherSettings) 
+        public GetLocationsSearchHandler(ILogger<GetLocationsSearchHandler> logger, IWeatherClient weatherClient, IOptionsMonitor<WeatherSettings> weatherSettings)
         {
-            _logger = logger ?? throw new ArgumentNullException (nameof (logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _weatherClient = weatherClient ?? throw new ArgumentNullException(nameof(weatherClient));
             _weatherSettings = weatherSettings.CurrentValue ?? throw new ArgumentException(nameof(weatherSettings));
         }
 
-      public async Task<Location[]> Handle(GetLocationsByTextRequest request, CancellationToken cancellationToken)
-      {
-          try
+        public async Task<Location[]> Handle(GetLocationsByTextRequest request, CancellationToken cancellationToken)
+        {
+            try
             {
                 var response = await _weatherClient.GetLocationsByText(_weatherSettings.ApiKey, request.Search, cancellationToken);
+                //var weather = response == null ? new weat(response.FirstOrDefault()) : throw new NullReferenceException();
+
                 return response;
             }
             catch (ApiException ex)
@@ -36,6 +40,6 @@ namespace BradyWeather.Application.UseCases.Weather.Handlers {
             }
 
             return new Location[] { };
-      }
+        }
     }
 }
